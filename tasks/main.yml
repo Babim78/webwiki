@@ -34,3 +34,8 @@
     src: "{{ mediawiki_destination }}/mediawiki-1.31.1"
     dest: "{{ mediawiki_destination }}/local.shrodcat"
     state: link
+-
+  name: "Include installation Mysql"
+  import_tasks: mysql.yml
+  tags:
+    - install
