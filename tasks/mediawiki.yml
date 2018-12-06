@@ -1,0 +1,23 @@
+- name: create directory
+  file:
+    path: "{{ mediawiki_destination }}"
+    state: directory
+
+- name: install mediawiki
+  unarchive:
+    src: "https://releases.wikimedia.org/mediawiki/1.31/mediawiki-1.31.1.tar.gz"
+    dest: "{{ mediawiki_destination }}"
+    remote_src: yes
+    creates: "{{ mediawiki_destination }}/mediawiki-1.31.1"
+
+- name: link mediawiki
+  file:
+    src: "{{ mediawiki_destination }}/mediawiki-1.31.1"
+    dest: "{{ mediawiki_destination }}/mediawiki"
+    state: link
+
+- name: link shrodcat
+  file:
+    src: "{{ mediawiki_destination }}/mediawiki-1.31.1"
+    dest: "{{ mediawiki_destination }}/local.shrodcat"
+    state: link

@@ -1,41 +1,26 @@
 ---
-- name: Update APT cache
+- name: "Update APT cache"
   apt: update_cache=yes
 
-- name: Install Apache
+- name: "Install Apache"
   apt: pkg="apache2={{ apache_version }}" state=present
 
-- name: Configure Apache
+- name: "Configure Apache"
   template: src=ports.conf.j2 dest=/etc/apache2/ports.conf
   notify:
     - Restart Apache
 
-# tasks file for mediawiki
-- name: create directory
-  file:
-    path: "{{ mediawiki_destination }}"
-    state: directory
+# - name: "Include installation Php"
+#   import_tasks: php_install.yml
+#   tags:
+#     - install
 
-- name: install mediawiki
-  unarchive:
-    src: "https://releases.wikimedia.org/mediawiki/1.31/mediawiki-1.31.1.tar.gz"
-    dest: "{{ mediawiki_destination }}"
-    remote_src: yes
-    creates: "{{ mediawiki_destination }}/mediawiki-1.31.1"
-
-- name: link mediawiki
-  file:
-    src: "{{ mediawiki_destination }}/mediawiki-1.31.1"
-    dest: "{{ mediawiki_destination }}/mediawiki"
-    state: link
-
-- name: link shrodcat
-  file:
-    src: "{{ mediawiki_destination }}/mediawiki-1.31.1"
-    dest: "{{ mediawiki_destination }}/local.shrodcat"
-    state: link
--
-  name: "Include installation Mysql"
+- name: "Include installation Mysql"
   import_tasks: mysql.yml
+  tags:
+    - install
+
+- name: "Include installation Mediawiki"
+  import_tasks: mediawiki.yml
   tags:
     - install
