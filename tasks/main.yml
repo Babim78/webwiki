@@ -10,11 +10,6 @@
   notify:
     - Restart Apache
 
-# - name: "Include installation Php"
-#   import_tasks: php_install.yml
-#   tags:
-#     - install
-
 - name: "Include installation Mysql"
   import_tasks: mysql.yml
   tags:
